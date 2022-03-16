@@ -1,0 +1,30 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.berkeyoncaci.registrationapi.user;
+
+/**
+ *
+ * @author berke
+ */
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
+@Repository
+@Transactional(readOnly = true)
+public interface AppUserRepository extends JpaRepository<AppUser, Long> {
+    Optional<AppUser> findByEmail(String email);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE AppUser a " +
+            "SET a.enabled = TRUE WHERE a.email = ?1")
+    int enableUser(String email);
+}
